@@ -1,4 +1,4 @@
-package models;
+package dev.personal.josema.computers.shop.models;
 
 import java.util.List;
 
@@ -18,6 +18,7 @@ public class Store {
     
     private String name; 
     private String owner;
+    private String taxId;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Computer> computers;
@@ -25,10 +26,27 @@ public class Store {
     public Store() {
     }
 
-    public Store(int idStore, String name, String owner) {
+    public Store(int idStore, String name, String owner, String taxId) {
         this.idStore = idStore;
         this.name = name;
         this.owner = owner;
+        this.taxId = taxId;
+    }
+
+    public List<Computer> getComputers() {
+        return computers;
+    }
+
+    public void setComputers(List<Computer> computers) {
+        this.computers = computers;
+    }
+
+    public String getTaxId() {
+        return taxId;
+    }
+
+    public void setTaxId(String taxId) {
+        this.taxId = taxId;
     }
 
     public int getIdStore() {

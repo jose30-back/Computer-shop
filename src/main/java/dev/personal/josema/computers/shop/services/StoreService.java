@@ -20,6 +20,22 @@ public class StoreService {
     @Autowired
     private ComputerRepository computerRepository;
 
+    // Método para crear una nueva tienda
+    public Store createStore(Store store) {
+        return storeRepository.save(store);
+    }
+
+    // Método para listar todas las tiendas
+    public List<Store> listAllStores() {
+        return storeRepository.findAll();
+    }
+
+    // Método para obtener una tienda por su ID
+    public Store getStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+    }
+
     // Agregar un computador a la tienda
     public Computer addComputerToStore(Long storeId, Computer computer) {
 

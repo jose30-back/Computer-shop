@@ -3,6 +3,7 @@ package dev.personal.josema.computers.shop.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import dev.personal.josema.computers.shop.models.Computer;
+import dev.personal.josema.computers.shop.models.Store;
 import dev.personal.josema.computers.shop.services.StoreService;
+
+
 
 @RestController
 @RequestMapping("api/stores")
@@ -22,6 +26,19 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+
+
+    @PostMapping
+    public ResponseEntity<Store> createStore(@RequestBody Store store) {
+        Store newStore = storeService.createStore(store);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newStore);
+    }
+
+    // Listar todas las tiendas
+    @GetMapping
+    public ResponseEntity<List<Store>> listAllStores() {
+        return ResponseEntity.ok(storeService.listAllStores());
+    }
 
     // Agregar un computador a la tienda
     @PostMapping("{storeId}/computers")
@@ -32,7 +49,7 @@ public class StoreController {
         return ResponseEntity.ok(addedComputer);
     }
 
-    // Eliminar un computador de la tienda dada su marca
+    
     @DeleteMapping("{storeId}/computers")
     public ResponseEntity<Void> deleteComputersByBrand(
             @PathVariable Long storeId,

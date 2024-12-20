@@ -1,5 +1,7 @@
 package dev.personal.josema.computers.shop.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +22,7 @@ public class Computer {
     private String operatingSystem; 
     private double price;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;

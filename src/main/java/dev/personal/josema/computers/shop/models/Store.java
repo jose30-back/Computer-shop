@@ -2,6 +2,8 @@ package dev.personal.josema.computers.shop.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,19 +16,20 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idStore;
+    private Long idStore;
     
     private String name; 
     private String owner;
     private String taxId;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Computer> computers;
 
     public Store() {
     }
 
-    public Store(int idStore, String name, String owner, String taxId) {
+    public Store(Long idStore, String name, String owner, String taxId) {
         this.idStore = idStore;
         this.name = name;
         this.owner = owner;
@@ -49,10 +52,10 @@ public class Store {
         this.taxId = taxId;
     }
 
-    public int getIdStore() {
+    public Long getIdStore() {
         return idStore;
     }
-    public void setIdStore(int idStore) {
+    public void setIdStore(Long idStore) {
         this.idStore = idStore;
     }
     public String getName() {

@@ -42,6 +42,7 @@ public class StoreService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
         computer.setStore(store);
+        System.out.println("Asociando computador con tienda: " + store.getName());
         return computerRepository.save(computer);
     }
 
@@ -49,10 +50,21 @@ public class StoreService {
     public void deleteComputerByBrand(Long storeId, String brand) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+    
         List<Computer> computersToDelete = store.getComputers().stream()
                 .filter(computer -> computer.getBrand().equalsIgnoreCase(brand))
                 .collect(Collectors.toList());
-        computerRepository.deleteAll(computersToDelete);
+    
+        if (!computersToDelete.isEmpty()) {
+            // Eliminar de la lista de la tienda
+            store.getComputers().removeAll(computersToDelete);
+    
+            // Guardar la tienda para sincronizar
+            storeRepository.save(store);
+    
+            // Eliminar de la base de datos
+            computerRepository.deleteAll(computersToDelete);
+        }
     }
 
     // Buscar computadores en la tienda por marca
@@ -68,6 +80,9 @@ public class StoreService {
     public List<Computer> listAllComputers(Long storeId) {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(() -> new RuntimeException("Tienda no encontrada"));
+        if (store.getComputers() == null || store.getComputers().isEmpty()) {
+            System.out.println("No hay computadores en la tienda con ID: " + storeId);
+        }
         return store.getComputers();
     }
 

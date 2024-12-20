@@ -27,7 +27,7 @@ public class StoreController {
     @Autowired
     private StoreService storeService;
 
-
+    // Crear tienda 
     @PostMapping
     public ResponseEntity<Store> createStore(@RequestBody Store store) {
         Store newStore = storeService.createStore(store);
@@ -49,7 +49,7 @@ public class StoreController {
         return ResponseEntity.ok(addedComputer);
     }
 
-    
+    // Eliminar tienda por marca 
     @DeleteMapping("{storeId}/computers")
     public ResponseEntity<Void> deleteComputersByBrand(
             @PathVariable Long storeId,
